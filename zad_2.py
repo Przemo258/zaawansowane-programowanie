@@ -1,5 +1,6 @@
 class Library:
-    def __init__(self, city: str, street: str, zip_code: str, open_hours: str, phone: str):
+    def __init__(self, city: str, street: str,
+                 zip_code: str, open_hours: str, phone: str):
         self.city = city
         self.street = street
         self.zip_code = zip_code
@@ -11,7 +12,8 @@ class Library:
 
 
 class Employee:
-    def __init__(self, first_name: str, last_name: str, hire_date: str, birth_date: str, city: str, street: str,
+    def __init__(self, first_name: str, last_name: str,
+                 hire_date: str, birth_date: str, city: str, street: str,
                  zip_code: str, phone: str):
         self.phone = phone
         self.zip_code = zip_code
@@ -27,7 +29,8 @@ class Employee:
 
 
 class Book:
-    def __init__(self, library: Library, publication_date: str, author_name: str, author_surname: str,
+    def __init__(self, library: Library, publication_date: str,
+                 author_name: str, author_surname: str,
                  number_of_pages: int):
         self.number_of_pages = number_of_pages
         self.author_surname = author_surname
@@ -36,7 +39,8 @@ class Book:
         self.library = library
 
     def __str__(self):
-        return f'This is a book by {self.author_name} {self.author_surname} published {self.publication_date} from {self.library}'
+        return f'This is a book by {self.author_name} {self.author_surname}' \
+               ' published {self.publication_date} from {self.library} '
 
 
 class Student:
@@ -61,11 +65,14 @@ class Order:
         self.employee = employee
 
     def __str__(self):
-        return f'This is an order from {self.student} realized by {self.employee}'
+        return f'This is an order from {self.student}' \
+               ' realized by {self.employee}'
 
 
-lib1 = Library('Katowice', 'Katowicka', '40-000', "9-21", "+48123456789")
-lib2 = Library('Gliwice', 'Gliwice', '40-000', "7-22", "+48987654321")
+lib1 = Library('Katowice', 'Katowicka', '40-000', "9-21",
+               "+48123456789")
+lib2 = Library('Gliwice', 'Gliwice', '40-000', "7-22",
+               "+48987654321")
 
 book1 = Book(lib1, '2022-10-18T16:02:04+0000', 'Jan', 'Nowak', 69)
 book2 = Book(lib1, '2021-9-18T16:02:04+0000', 'Jan', 'Nowak', 420)
@@ -73,11 +80,14 @@ book3 = Book(lib2, '2020-8-18T16:02:04+0000', 'Jan', 'Nowak', 9001)
 book4 = Book(lib2, '2019-7-18T16:02:04+0000', 'Jan', 'Nowak', 360)
 book5 = Book(lib2, '2018-6-18T16:02:04+0000', 'Jan', 'Nowak', 200)
 
-emp1 = Employee('Anna', 'Kempa', '1999-1-18T16:02:04+0000', '1978-2-18T16:02:04+0000', 'Katowice', 'Centralna',
+emp1 = Employee('Anna', 'Kempa', '1999-1-18T16:02:04+0000',
+                '1978-2-18T16:02:04+0000', 'Katowice', 'Centralna',
                 '40-001', '192837465')
-emp2 = Employee('Kuba', 'Rozpruwacz', '2005-6-18T16:02:04+0000', '1989-4-18T16:02:04+0000', 'Gliwice', 'Inna',
+emp2 = Employee('Kuba', 'Rozpruwacz', '2005-6-18T16:02:04+0000',
+                '1989-4-18T16:02:04+0000', 'Gliwice', 'Inna',
                 '40-105', '567891234')
-emp3 = Employee('Joanna', 'Nowak', '2013-1-18T16:02:04+0000', '1994-2-18T16:02:04+0000', 'Katowice', 'Centralna',
+emp3 = Employee('Joanna', 'Nowak', '2013-1-18T16:02:04+0000',
+                '1994-2-18T16:02:04+0000', 'Katowice', 'Centralna',
                 '40-505', '192837465')
 
 stud1 = Student('Kuba', [1, 2, 3, 4])
