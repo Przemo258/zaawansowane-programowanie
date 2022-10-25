@@ -4,7 +4,7 @@ lista = range(10)
 def zad_4(liczby):
     nowa = []
     for index, liczba in enumerate(liczby):
-        if (index % 2 == 0):
+        if index % 2 == 1:
             nowa.append(liczba)
     return nowa
 
