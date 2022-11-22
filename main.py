@@ -6,26 +6,30 @@ from magazine.Rating import Rating
 from magazine.Tag import Tag
 
 app = FastAPI()
+movies_data = Movie.get_movies()
+links_data = Link.get_links()
+ratings_data = Rating.get_ratings()
+tag_data = Tag.get_tags()
 
 
 @app.get('/movies')
 async def movies():
-    return Movie.get_movies()
+    return movies_data
 
 
 @app.get('/links')
 async def links():
-    return Link.get_links()
+    return links_data
 
 
 @app.get('/ratings')
 async def ratings():
-    return Rating.get_ratings()
+    return ratings_data
 
 
 @app.get('/tags')
 async def tags():
-    return Tag.get_tags()
+    return tag_data
 
 
 if __name__ == "__main__":
