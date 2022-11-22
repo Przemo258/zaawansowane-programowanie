@@ -32,5 +32,10 @@ async def tags():
     return tag_data
 
 
+@app.get('/')
+async def root():
+    return {"message": "hello world"}
+
+# links to working app: https://python-api-zaaw-programowanie.herokuapp.com/
 # if __name__ == "__main__":
 #     uvicorn.run(app, host="localhost", port=8000)
