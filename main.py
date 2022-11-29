@@ -7,8 +7,9 @@ pytesseract.pytesseract.tesseract_cmd = \
 
 def get_text_from_img(img_path: str):
     img = cv2.imread(img_path)
-    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    return pytesseract.image_to_string(img_rgb)
+    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    converted_img = cv2.threshold(cv2.medianBlur(img_gray, 3), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+    return pytesseract.image_to_string(converted_img)
 
 
 if __name__ == '__main__':
