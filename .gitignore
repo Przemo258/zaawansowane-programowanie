@@ -1,1 +1,7 @@
 /.idea
+/results
+magazine/ultralytics_yolov5_master/*
+magazine/ultralytics_yolov5_master
+magazine/trusted_list
+*.pt
+.pyc
