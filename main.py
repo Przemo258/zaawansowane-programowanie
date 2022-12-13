@@ -2,7 +2,7 @@ import uvicorn
 import os
 from fastapi import FastAPI, UploadFile, HTTPException, BackgroundTasks
 from fastapi.responses import FileResponse
-from magazine.model import get_model, analize_image
+from magazine.model import get_model, analise_image
 
 app = FastAPI()
 model = get_model()
@@ -13,7 +13,7 @@ async def root(file: UploadFile):
     # sprawdzamy czy to zdjęcie .jpg
     if file.content_type != "image/jpeg":
         raise HTTPException(400, detail="Invalid file type")
-    return analize_image(file.file, model)
+    return analise_image(file.file, model)
 
 
 @app.post('/total')
@@ -21,7 +21,7 @@ async def total(file: UploadFile):
     # sprawdzamy czy to zdjęcie .jpg
     if file.content_type != "image/jpeg":
         raise HTTPException(400, detail="Invalid file type")
-    count = analize_image(file.file, model)['total']
+    count = analise_image(file.file, model)['total']
     return {'total': count}
 
 
@@ -30,7 +30,7 @@ async def time(file: UploadFile):
     # sprawdzamy czy to zdjęcie .jpg
     if file.content_type != "image/jpeg":
         raise HTTPException(400, detail="Invalid file type")
-    result = analize_image(file.file, model)
+    result = analise_image(file.file, model)
     elapsed = result['elapsed_time']
     description = result['description']
     return {'elapsed_time': elapsed, 'description': description}
@@ -41,7 +41,7 @@ async def time(file: UploadFile):
     # sprawdzamy czy to zdjęcie .jpg
     if file.content_type != "image/jpeg":
         raise HTTPException(400, detail="Invalid file type")
-    data = analize_image(file.file, model)['results']
+    data = analise_image(file.file, model)['results']
     return data
 
 
@@ -62,7 +62,7 @@ async def img(file: UploadFile, background_tasks: BackgroundTasks):
 
     # po wyświetleniu zdjęcia zostanie ono usunięte
     background_tasks.add_task(cleanup_files)
-    _ = analize_image(file.file, model, save_img=True)
+    _ = analise_image(file.file, model, save_img=True)
 
     # zwracamy przeanalizowane zdjęcie
     response = FileResponse('results/run/image0.jpg')

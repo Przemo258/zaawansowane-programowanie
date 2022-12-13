@@ -7,7 +7,7 @@ def get_model():
     # wybieramy gdzie ma pobrać model i wagi :X
     torch.hub.set_dir('magazine/')
     # wczytanie modelu bez wyświetlania dodatkowych informacji
-    model = torch.hub.load('ultralytics/yolov5', 'yolov5s', verbose=False)
+    model = torch.hub.load('ultralytics/yolov5', 'yolov5x', verbose=False)
     # jak jest możliwość wykonać na gpu ale niepotrzebne
     # bo pytorch robi to automatycznie ale chce mieć 5
     if torch.cuda.is_available():
@@ -17,7 +17,7 @@ def get_model():
     return model
 
 
-def analize_image(image, model, save_img: bool = False):
+def analise_image(image, model, save_img: bool = False):
     # wczytanie zdjęcia
     img = cv2.imread(image, cv2.IMREAD_COLOR)
     # konwersja z BGR na RGB
