@@ -69,7 +69,7 @@ def save_analised(image, model):
         xmin, xmax = int(row['xmin']), int(row['xmax'])
         ymin, ymax = int(row['ymin']), int(row['ymax'])
 
-        img = cv2.rectangle(img, (xmin, ymin), (xmax, ymax), color, 20)
+        img = cv2.rectangle(img, (xmin, ymin), (xmax, ymax), color, 5)
 
     # zapisanie pliku z unikalną nazwą
     file_path = f'results/{uuid.uuid4()}.jpg'
