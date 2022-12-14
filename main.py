@@ -1,8 +1,7 @@
 import uvicorn
-import os
-from fastapi import FastAPI, UploadFile, HTTPException, BackgroundTasks
+from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.responses import FileResponse
-from magazine.model import get_model, analise_image
+from magazine.model import get_model, get_results, save_analised
 
 app = FastAPI()
 model = get_model()
@@ -13,7 +12,7 @@ async def root(file: UploadFile):
     # sprawdzamy czy to zdjęcie .jpg
     if file.content_type != "image/jpeg":
         raise HTTPException(400, detail="Invalid file type")
-    return analise_image(file.file, model)
+    return get_results(file.file, model)
 
 
 @app.post('/total')
@@ -21,7 +20,7 @@ async def total(file: UploadFile):
     # sprawdzamy czy to zdjęcie .jpg
     if file.content_type != "image/jpeg":
         raise HTTPException(400, detail="Invalid file type")
-    count = analise_image(file.file, model)['total']
+    count = get_results(file.file, model)['total']
     return {'total': count}
 
 
@@ -30,7 +29,7 @@ async def time(file: UploadFile):
     # sprawdzamy czy to zdjęcie .jpg
     if file.content_type != "image/jpeg":
         raise HTTPException(400, detail="Invalid file type")
-    result = analise_image(file.file, model)
+    result = get_results(file.file, model)
     elapsed = result['elapsed_time']
     description = result['description']
     return {'elapsed_time': elapsed, 'description': description}
@@ -41,32 +40,20 @@ async def time(file: UploadFile):
     # sprawdzamy czy to zdjęcie .jpg
     if file.content_type != "image/jpeg":
         raise HTTPException(400, detail="Invalid file type")
-    data = analise_image(file.file, model)['results']
+    data = get_results(file.file, model)['results']
     return data
 
 
-def cleanup_files():
-    # wchodzimy do folderu i usuwamy zdjęcie i folder w którym sie znajduje
-    os.chdir('results/run')
-    os.remove('image0.jpg')
-    os.chdir('../')
-    os.rmdir('run')
-    os.chdir('../')
-
-
 @app.post('/img')
-async def img(file: UploadFile, background_tasks: BackgroundTasks):
+async def img(file: UploadFile):
     # sprawdzamy czy to zdjęcie .jpg
     if file.content_type != "image/jpeg":
         raise HTTPException(400, detail="Invalid file type")
 
-    # po wyświetleniu zdjęcia zostanie ono usunięte
-    background_tasks.add_task(cleanup_files)
-    _ = analise_image(file.file, model, save_img=True)
+    file_path = save_analised(file.file, model)
 
     # zwracamy przeanalizowane zdjęcie
-    response = FileResponse('results/run/image0.jpg')
-    return response
+    return FileResponse(file_path)
 
 
 if __name__ == '__main__':

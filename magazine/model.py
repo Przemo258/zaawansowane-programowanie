@@ -1,6 +1,7 @@
 import torch
 import cv2
 import time
+import uuid
 
 
 def get_model():
@@ -17,7 +18,7 @@ def get_model():
     return model
 
 
-def analise_image(image, model, save_img: bool = False):
+def analise_image(image, model):
     # wczytanie zdjęcia
     img = cv2.imread(image, cv2.IMREAD_COLOR)
     # konwersja z BGR na RGB
@@ -34,12 +35,15 @@ def analise_image(image, model, save_img: bool = False):
 
     elapsed_time = end - start
 
-    # opcjonalne zapisanie zdjęcia do folderu (do podglądu)
-    if save_img:
-        model_results.save(save_dir='results/run')
-
     # przekonwertowanie wyników na pandasowy dataframe
     df = model_results.pandas().xyxy[0]
+
+    return df, img, elapsed_time, model_results
+
+
+def get_results(img, model):
+    # wykonanie analizy
+    df, _, elapsed_time, model_results = analise_image(img, model)
     # jako że model wykrywa tylko ludzi liczba wierszy = liczba ludzi
     count = df.shape[0]
     # przekonwertowanie wyników na json
@@ -49,4 +53,26 @@ def analise_image(image, model, save_img: bool = False):
                'results': results_json,
                'elapsed_time': elapsed_time,
                'description': str(model_results)}
+
     return results
+
+
+def save_analised(image, model):
+    # wykonanie analizy
+    results = analise_image(image, model)
+    df, img = results[0], results[1]
+
+    color = [0, 0, 255]
+
+    # narysowanie prostokątów na zdjęciu dla każdej wykrytej osoby
+    for index, row in df.iterrows():
+        xmin, xmax = int(row['xmin']), int(row['xmax'])
+        ymin, ymax = int(row['ymin']), int(row['ymax'])
+
+        img = cv2.rectangle(img, (xmin, ymin), (xmax, ymax), color, 20)
+
+    # zapisanie pliku z unikalną nazwą
+    file_path = f'results/{uuid.uuid4()}.jpg'
+    cv2.imwrite(file_path, img)
+
+    return file_path
